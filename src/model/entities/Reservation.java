@@ -1,6 +1,5 @@
 package model.entities;
 
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,19 +34,21 @@ public class Reservation {
         return checkout;
     }
 
-    public Integer duration() {
+    public long duration() {
         Duration duration = Duration.between(getCheckout(), getCheckin());
-        return (int) duration.toDays();
+        return duration.toDays();
     }
 
     public void updateDates(LocalDate checkin, LocalDate checkout) {
-            this.checkin = checkin;
-            this.checkout = checkout;
-        }
+        this.checkin = checkin;
+        this.checkout = checkout;
+    }
+
+    @Override
     public String toString() {
         DateTimeFormatter dt1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return String.format("Room: %d | Check-in: %s | Check-out: %s | %d nights",
-                getRoomNumber(), getCheckin().format(dt1), getCheckout().format(dt1),duration());
+        return String.format("Room: %d | Check-in: %s | Check-out: %s",
+                getRoomNumber(), getCheckin().format(dt1), getCheckout().format(dt1));
     }
 
 
