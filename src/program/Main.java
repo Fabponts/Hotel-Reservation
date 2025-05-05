@@ -32,25 +32,31 @@ public class Main {
             scan.nextLine();
             reservation.setRoomNumber(roomNumber);
 
-            System.out.println("--Enter Check-In:");
+            System.out.println("--Enter Check-In (dd/MM/yyyy):");
             LocalDate checkin = LocalDate.parse(scan.nextLine(), dt1);
 
-            System.out.println("--Enter Check-Out:");
+            System.out.println("--Enter Check-Out (dd/MM/yyyy):");
             LocalDate checkout = LocalDate.parse(scan.nextLine(), dt1);
 
             while (!checkout.isAfter(checkin)) {
                 System.out.println("Error in reservation :Check-Out date must be after check-in date");
 
-                System.out.println("Tap the check-In again:");
+                System.out.println("Tap the check-In again(dd/MM/yyyy):");
                 checkin = LocalDate.parse(scan.nextLine(), dt1);
 
-                System.out.println("Check-Out date again:");
+                System.out.println("Check-Out date again(dd/MM/yyyy):");
                 checkout = LocalDate.parse(scan.nextLine(), dt1);
+
             }
-
-            reservationList.add(new Reservation(roomNumber, checkin, checkout));
-            System.out.println("RESERVATION CONFIRMED");
-
+            LocalDate now = LocalDate.now();
+            if(checkin.isBefore(now) || checkout.isAfter(now)){
+                System.out.println("Error in reservation: dates must be in future");
+            } else if (!checkout.isAfter(checkin)){
+                System.out.println("Error in reservation :Check-Out date must be after check-in date");
+            }else{
+                reservationList.add(new Reservation());
+                System.out.println("RESERVATION CONFIRMED");
+            }
             System.out.println("----Do you want to do an Update?(s/n)----");
             updateConfirm = scan.nextLine();
             while (!updateConfirm.equalsIgnoreCase("s") && !
@@ -68,11 +74,10 @@ public class Main {
                 System.out.println("Check-Out date(dd/MM/yyyy)");
                 LocalDate checkoutUpdate = LocalDate.parse(scan.nextLine(), dt1);
                 reservation.updateDates(checkinUpdate, checkoutUpdate);
+                System.out.println("RESERVATION UPDATED");
+                System.out.println("Reservation: " + reservation);
+
             }
-        }
-        for (Reservation reservation : reservationList) {
-            System.out.println("Reservation:");
-            System.out.println(reservation);
         }
     }
 }
