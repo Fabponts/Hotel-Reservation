@@ -2,6 +2,7 @@ package program;
 
 import model.entities.Reservation;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -9,9 +10,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         int n = 0;
-        String updateConfirm = " ";
+        String updateConfirm = "";
         DateTimeFormatter dt1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner scan = new Scanner(System.in);
 
@@ -37,10 +38,21 @@ public class Main {
             System.out.println("--Enter Check-Out:");
             LocalDate checkout = LocalDate.parse(scan.nextLine(), dt1);
 
+            while (!checkout.isAfter(checkin)) {
+                System.out.println("Error in reservation :Check-Out date must be after check-in date");
+
+                System.out.println("Tap the check-In again:");
+                checkin = LocalDate.parse(scan.nextLine(), dt1);
+
+                System.out.println("Check-Out date again:");
+                checkout = LocalDate.parse(scan.nextLine(), dt1);
+            }
+
             reservationList.add(new Reservation(roomNumber, checkin, checkout));
             System.out.println("RESERVATION CONFIRMED");
 
             System.out.println("----Do you want to do an Update?(s/n)----");
+            updateConfirm = scan.nextLine();
             while (!updateConfirm.equalsIgnoreCase("s") && !
                     updateConfirm.equalsIgnoreCase("n")) {
 
@@ -55,10 +67,11 @@ public class Main {
 
                 System.out.println("Check-Out date(dd/MM/yyyy)");
                 LocalDate checkoutUpdate = LocalDate.parse(scan.nextLine(), dt1);
-                reservation.updateDates(checkinUpdate,checkoutUpdate);
+                reservation.updateDates(checkinUpdate, checkoutUpdate);
             }
         }
         for (Reservation reservation : reservationList) {
+            System.out.println("Reservation:");
             System.out.println(reservation);
         }
     }
