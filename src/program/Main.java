@@ -47,36 +47,33 @@ public class Main {
                 System.out.println("Check-Out date again(dd/MM/yyyy):");
                 checkout = LocalDate.parse(scan.nextLine(), dt1);
 
-            }
-            LocalDate now = LocalDate.now();
-            if(checkin.isBefore(now) || checkout.isAfter(now)){
-                System.out.println("Error in reservation: dates must be in future");
-            } else if (!checkout.isAfter(checkin)){
-                System.out.println("Error in reservation :Check-Out date must be after check-in date");
-            }else{
                 reservationList.add(new Reservation());
                 System.out.println("RESERVATION CONFIRMED");
-            }
-            System.out.println("----Do you want to do an Update?(s/n)----");
-            updateConfirm = scan.nextLine();
-            while (!updateConfirm.equalsIgnoreCase("s") && !
-                    updateConfirm.equalsIgnoreCase("n")) {
 
-                System.out.println("---- Tap a valid answer please ----");
                 System.out.println("----Do you want to do an Update?(s/n)----");
                 updateConfirm = scan.nextLine();
-            }
-            if (updateConfirm.equalsIgnoreCase("s")) {
-                System.out.println("---Enter Data update:---");
-                System.out.println("Check-In date(dd/MM/yyyy)");
-                LocalDate checkinUpdate = LocalDate.parse(scan.nextLine(), dt1);
+                while (!updateConfirm.equalsIgnoreCase("s") && !
+                        updateConfirm.equalsIgnoreCase("n")) {
 
-                System.out.println("Check-Out date(dd/MM/yyyy)");
-                LocalDate checkoutUpdate = LocalDate.parse(scan.nextLine(), dt1);
-                reservation.updateDates(checkinUpdate, checkoutUpdate);
-                System.out.println("RESERVATION UPDATED");
-                System.out.println("Reservation: " + reservation);
+                    System.out.println("---- Tap a valid answer please ----");
+                    System.out.println("----Do you want to do an Update?(s/n)----");
+                    updateConfirm = scan.nextLine();
+                }
+                if (updateConfirm.equalsIgnoreCase("s")) {
+                    System.out.println("---Enter Data update:---");
+                    System.out.println("Check-In date(dd/MM/yyyy)");
+                    LocalDate checkinUpdate = LocalDate.parse(scan.nextLine(), dt1);
 
+                    System.out.println("Check-Out date(dd/MM/yyyy)");
+                    LocalDate checkoutUpdate = LocalDate.parse(scan.nextLine(), dt1);
+                    String error = reservation.updateDates(checkinUpdate, checkoutUpdate);
+                    if (error != null) {
+                        System.out.println("Error in reservation: " + error);
+                    } else {
+                        System.out.println("RESERVATION UPDATED");
+                        System.out.println("Reservation: " + reservation);
+                    }
+                }
             }
         }
     }
